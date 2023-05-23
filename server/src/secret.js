@@ -3,6 +3,8 @@ require('dotenv').config();
 
 // Secret Key
 const serverPort = process.env.SERVER_PORT || 8080;
+// MongoDB
+const mongodbURL = process.env.MONGODB_ATLAS_URL;
 
 // exports
-module.exports = { serverPort };
+module.exports = { serverPort, mongodbURL };

@@ -1,6 +1,6 @@
 # E-commerce MERN Stack Project
 
-## Basic Setup:
+## Backend Basic Setup:
 
 1. Environment Setup
 1. Create Express Server: `yarn add express`
