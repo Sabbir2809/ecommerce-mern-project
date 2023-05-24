@@ -13,3 +13,4 @@
 1. How to secure API: `yarn add xss-clean express-rate-limit`
 1. Environment variable (.env) and (.gitignore)
 1. MVC Architecture
+1. Schema and Model for User
