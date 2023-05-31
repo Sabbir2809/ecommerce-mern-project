@@ -9,18 +9,17 @@ const userSchema = new Schema(
       trim: true,
       required: [true, 'User Name is Required'],
       maxLength: [31, 'The length of user name can be maximum 31 characters'],
-      minLength: [31, 'The length of user name can be maximum 31 characters'],
     },
 
     email: {
       type: String,
       unique: true,
+      required: [true, 'User Email Address is Required'],
       lowercase: true,
       trim: true,
-      required: [true, 'User Email Address is Required'],
       validate: {
         validator: (v) => {
-          return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+          return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(v);
         },
         message: 'Please enter a valid email address',
       },
@@ -31,7 +30,7 @@ const userSchema = new Schema(
       required: [true, 'User Password is Required'],
       minLength: [6, 'The length of user password can be minimum 6 characters'],
       set: (v) => {
-        bcrypt.hashSync(v, bcrypt.genSaltSync(10));
+        return bcrypt.hashSync(v, bcrypt.genSaltSync(10));
       },
     },
 

@@ -6,7 +6,8 @@ const bodyParser = require('body-parser');
 const createError = require('http-errors');
 const xssClean = require('xss-clean');
 const rateLimit = require('express-rate-limit');
-const userRouter = require('./src/routes/userRouter');
+const userRouter = require('./routes/userRouter');
+const seedRouter = require('./routes/seedRouter');
 
 // Middleware
 app.use(morgan('dev'));
@@ -27,6 +28,7 @@ app.get('/test', (req, res) => {
 });
 
 app.use('/api/users', userRouter);
+app.use('/api/seed', seedRouter);
 
 // ERROR - client error handling
 app.use((req, res, next) => {
@@ -38,7 +40,10 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   // console.error(err.stack);
   // res.status(500).send('Something broke!');
-  return res.status(err.status || 500).json({ success: false, message: err.message });
+  return res.status(err.status || 500).json({
+    success: false,
+    message: err.message,
+  });
 });
 
 module.exports = app;
