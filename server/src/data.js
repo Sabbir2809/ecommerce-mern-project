@@ -1,4 +1,4 @@
-exports.data = {
+const data = {
   users: [
     {
       name: 'Sabbir Hossain',
@@ -16,3 +16,5 @@ exports.data = {
     },
   ],
 };
+
+module.exports = data;
