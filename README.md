@@ -15,3 +15,5 @@
 1. MVC Architecture(Model View Controllers)
 1. Schema and Model for User
 1. Create seed route for testing
+1. GET: api/users - isAdmin - getAllUsers - searchByName + pagination Functionality
+1. ResponseHandler controller for error or success

@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 const { defaultImagePath } = require('../secret');
 
+// Schema
 const userSchema = new Schema(
   {
     name: {
@@ -61,9 +62,11 @@ const userSchema = new Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   }
 );
 
+// model
 const userModel = model('Users', userSchema);
-
+// export
 module.exports = userModel;
