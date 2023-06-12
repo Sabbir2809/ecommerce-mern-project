@@ -1,8 +1,12 @@
 // Dependencies
-const fs = require('fs');
 const userModel = require('../models/userModel');
 const { successResponse } = require('../helper/responseController');
 const { findWithId } = require('../services/findItem');
+const { deleteImage } = require('../helper/deleteImage');
+const createHttpError = require('http-errors');
+const { createJSONWebToken } = require('../helper/jsonwebtoken');
+const { jwtActivationKey, clientURL } = require('../secret');
+const { sendEmailWithNodeMailer } = require('../helper/email');
 
 // @description: get all users
 // @route: GET - /api/users
@@ -88,16 +92,8 @@ const deleteUserById = async (req, res, next) => {
     const user = await findWithId(userModel, id, options); // find user in DB
 
     const userImagePath = user.image;
-    fs.access(userImagePath, (err) => {
-      if (err) {
-        console.error('User image does not exist');
-      } else {
-        fs.unlink(userImagePath, (err) => {
-          if (err) throw err;
-          console.log('User image was deleted');
-        });
-      }
-    });
+
+    deleteImage(userImagePath);
 
     await userModel.findByIdAndDelete({
       _id: id,
@@ -114,9 +110,60 @@ const deleteUserById = async (req, res, next) => {
   }
 };
 
+// @description: get single user
+// @route: GET - /api/user/:id
+// @access: public
+const processRegister = async (req, res, next) => {
+  try {
+    // fetch data form request body
+    const { name, email, password, phone, address } = req.body;
+
+    // user exist
+    const userExist = await userModel.exists({ email });
+    if (userExist) {
+      throw createHttpError(409, 'User with this email already exist. Please Sign In');
+    }
+
+    // create jwt: temporary store user data in
+    const token = await createJSONWebToken(
+      { name, email, password, phone, address },
+      jwtActivationKey,
+      '10m'
+    );
+
+    // prepare email
+    const emailData = {
+      email,
+      subject: 'Account Activation Email',
+      html: `
+        <h2>Hello, ${name} !</h2>
+        <p>Please Click here to <a href='${clientURL}/api/users/activate/${token}' target='_blank'> Activate Your Account</a></p>
+      `,
+    };
+
+    // send email with nodemailer
+    try {
+      await sendEmailWithNodeMailer(emailData);
+    } catch (error) {
+      next(createHttpError(500, 'Fail to send verification email '));
+      return;
+    }
+
+    // Success Response
+    return successResponse(res, {
+      statusCode: 200,
+      message: `Please go to your ${email} for completing your registration process`,
+      payload: { token },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // exports
 module.exports = {
   getUsers,
   getUserById,
   deleteUserById,
+  processRegister,
 };

@@ -21,3 +21,12 @@
 1. How to create services in the backend
 1. DELETE: api/users/:id -> Delete a single user by id
 1. Refactoring and Reusability, Dynamic
+1. DeleteImage helper
+1. POST: api/users/process-register -> Process the registration
+1. Create JWT
+1. Setup SMTP Server and Prepare Email
+1. Send Email
+1. POST: api/users/verify -> verify + register into database
+1. Add express validator middleware
+1. add multer middleware for file upload
+1. PUT: api/user/:id -> Update a Single User by Id
