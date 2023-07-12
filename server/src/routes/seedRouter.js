@@ -1,6 +1,6 @@
 // Dependencies
-const seedUser = require('../controllers/seedController');
 const seedRouter = require('express').Router();
+const seedUser = require('../controllers/seedController');
 
 // seed router
 seedRouter.get('/seed/users', seedUser);

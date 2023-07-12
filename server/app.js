@@ -6,8 +6,9 @@ const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const hpp = require('hpp');
 const createHttpError = require('http-errors');
-const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const morgan = require('morgan');
+
 const userRouter = require('./src/routes/userRouter');
 const seedRouter = require('./src/routes/seedRouter');
 const { errorResponse } = require('./src/helper/responseController');
@@ -19,7 +20,7 @@ app.use(hpp());
 app.use(mongoSanitize());
 const reteLimiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 5,
+  max: 15,
   message: 'Too many Requests from this IP. Please try again later',
 });
 app.use(reteLimiter);

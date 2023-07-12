@@ -1,6 +1,8 @@
+// Dependencies
 const data = require('../data');
 const userModel = require('../models/userModel');
 
+// seed user
 const seedUser = async (req, res, next) => {
   try {
     // deleting all existing users
@@ -14,4 +16,5 @@ const seedUser = async (req, res, next) => {
   }
 };
 
+// export
 module.exports = seedUser;

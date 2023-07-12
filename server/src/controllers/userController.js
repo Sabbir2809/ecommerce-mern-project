@@ -111,7 +111,7 @@ const deleteUserById = async (req, res, next) => {
 };
 
 // @description: get single user
-// @route: GET - /api/user/:id
+// @route: POST - /api/user/:id
 // @access: public
 const processRegister = async (req, res, next) => {
   try {
